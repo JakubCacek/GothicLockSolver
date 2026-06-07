@@ -632,7 +632,7 @@ if (
         Consider the possibility that clicking through all of these warnings every time will become more annoying 
         than simply learning how the lockpicking system works.
 
-        This page was designed to be slightly unpleasant for a reason. If using the helper becomes a chore, maybe 
+        This page was designed to be annoying for a reason. If using the helper becomes a chore, maybe 
         that is the universe gently pushing you back toward the actual game.
         """
     )
@@ -667,12 +667,12 @@ if (
     and not st.session_state.second_warning
 ):
     
-    st.warning("Have you considered simply thinking?")
+    st.warning("Do it for your future self")
 
     st.markdown(
         """
         Engaging in complex cognitive activities, such as solving puzzles, planning sequences, and tracking 
-        changing states, is generally good for your mind.
+        changing states, is generally good for your brain.
 
         We already outsource enough thinking to tools, guides, search engines, and now generative AI. If we are 
         going to let machines do everything for us, maybe we can at least avoid cheating in a video game puzzle.
