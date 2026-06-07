@@ -674,6 +674,41 @@ if show_json:
     st.code(json.dumps(config_preview, indent=2), language="json")
 
 
+def show_move_sequence(moves: str) -> None:
+    st.markdown(
+        f"""
+        <div style="
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        ">
+            {moves}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+if show_json:
+    config_preview = {
+        "start": problem["start"],
+        "target": problem["target"],
+        "locks": problem["locks"],
+        "positions": [problem["min_pos"], problem["max_pos"]],
+        "dependencies": problem["dependencies"]
+    }
+
+    st.code(
+        json.dumps(config_preview, indent=2),
+        language="json"
+    )
+
+
 if solve_button:
 
     try:
@@ -703,7 +738,7 @@ if solve_button:
                 st.success(f"Puzzle solved in {result['steps']} steps.")
 
                 st.markdown("### Short move sequence")
-                st.code(result["moves_short"], language="text")
+                show_move_sequence(result["moves_short"])
 
                 st.markdown("### Full path")
                 path_df = pd.DataFrame(result["path"])
@@ -740,10 +775,11 @@ if solve_button:
             st.write(f"Closest distance: `{result['closest_distance']}`")
 
             st.markdown("### Closest move sequence")
-            st.code(result["closest_moves_short"], language="text")
+            show_move_sequence(result["closest_moves_short"])
 
             st.markdown("### Closest reachable states")
             closest_df = pd.DataFrame(result["closest_states"])
+
             st.dataframe(
                 closest_df,
                 use_container_width=True,
