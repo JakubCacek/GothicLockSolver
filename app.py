@@ -636,25 +636,48 @@ if solve_button:
                 st.error(error)
 
         if result["solved"] is True:
-            st.success(f"Puzzle solved in {result['steps']} steps.")
 
-            st.markdown("### Short move sequence")
-            st.code(result["moves_short"], language="text")
+            if result["steps"] == 0:
+                st.warning(
+                    "All locks are currently set to 4, which means the chest is already solved. "
+                    "If this was not intended, please enter the actual starting positions of the locks first."
+                )
 
-            st.markdown("### Full path")
-            path_df = pd.DataFrame(result["path"])
-            path_df = path_df[
-                ["step", "move", "before", "movement", "after", "selected_lock", "click_direction"]
-            ]
-            st.dataframe(path_df, use_container_width=True, hide_index=True)
+            else:
+                st.success(f"Puzzle solved in {result['steps']} steps.")
 
-            st.caption(f"Visited states: {result['visited_states']}")
+                st.markdown("### Short move sequence")
+                st.code(result["moves_short"], language="text")
+
+                st.markdown("### Full path")
+                path_df = pd.DataFrame(result["path"])
+
+                if not path_df.empty:
+                    path_df = path_df[
+                        [
+                            "step",
+                            "move",
+                            "before",
+                            "movement",
+                            "after",
+                            "selected_lock",
+                            "click_direction"
+                        ]
+                    ]
+
+                    st.dataframe(
+                        path_df,
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+                st.caption(f"Visited states: {result['visited_states']}")
 
         elif result["solved"] is False:
-            st.error("No solution found with the current configuration.")
             st.error(
                 "No solution found with the current configuration. "
-                "Please make sure that all lock positions and dependencies were entered correctly.")
+                "Please make sure that all lock positions and dependencies were entered correctly."
+            )
 
             st.write(f"Visited states: `{result['visited_states']}`")
             st.write(f"Closest reachable state: `{result['closest_state']}`")
@@ -665,7 +688,11 @@ if solve_button:
 
             st.markdown("### Closest reachable states")
             closest_df = pd.DataFrame(result["closest_states"])
-            st.dataframe(closest_df, use_container_width=True, hide_index=True)
+            st.dataframe(
+                closest_df,
+                use_container_width=True,
+                hide_index=True
+            )
 
         else:
             st.error(result["message"])
