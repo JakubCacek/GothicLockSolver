@@ -410,11 +410,15 @@ st.info(
 # ------------------------------------------------------------
 # Desperation gate
 # ------------------------------------------------------------
+
 if "intro_accepted" not in st.session_state:
     st.session_state.intro_accepted = False
 
 if "chose_honour" not in st.session_state:
     st.session_state.chose_honour = False
+
+if "rules_explanation" not in st.session_state:
+    st.session_state.rules_explanation = False
 
 if "second_warning" not in st.session_state:
     st.session_state.second_warning = False
@@ -423,7 +427,7 @@ if "final_shame_message" not in st.session_state:
     st.session_state.final_shame_message = False
 
 
-# Honour ending after the first or second warning
+# Honour ending after choosing to continue alone
 if st.session_state.chose_honour:
     
     st.success("Good choice.")
@@ -439,14 +443,18 @@ if st.session_state.chose_honour:
 
     if st.button("The lock broke me.", use_container_width=True):
         st.session_state.chose_honour = False
-        st.session_state.second_warning = True
+        st.session_state.rules_explanation = True
         st.rerun()
 
     st.stop()
 
 
 # First warning screen
-if not st.session_state.intro_accepted and not st.session_state.second_warning:
+if (
+    not st.session_state.intro_accepted
+    and not st.session_state.rules_explanation
+    and not st.session_state.second_warning
+):
     
     st.warning("Before you continue...")
 
@@ -462,15 +470,87 @@ if not st.session_state.intro_accepted and not st.session_state.second_warning:
         """
     )
 
+    st.markdown(
+        """
+        **You are right.** I have reflected on my behaviour and want to continue trying to solve 
+        the lock on my own. Thank you for drawing my attention to this. I will not ruin the 
+        challenge prepared by the developers.
+        """
+    )
+
     if st.button(
-        "You are right. I have reflected on my behaviour and want to continue trying to solve the lock on my own. Thank you for drawing my attention to this. I will not ruin the challenge prepared by the developers.",
+        "I will continue on my own.",
         use_container_width=True
     ):
         st.session_state.chose_honour = True
         st.rerun()
 
+    st.markdown(
+        """
+        **I am done.** Just let me find the solution.
+        """
+    )
+
     if st.button(
-        "I am done. Just let me find the solution.",
+        "Show me the solver.",
+        type="primary",
+        use_container_width=True
+    ):
+        st.session_state.rules_explanation = True
+        st.rerun()
+
+    st.stop()
+
+
+# Rules explanation screen
+if (
+    not st.session_state.intro_accepted
+    and st.session_state.rules_explanation
+    and not st.session_state.second_warning
+):
+    
+    st.warning("Maybe the lock did not defeat you. Maybe it only confused you.")
+
+    st.markdown(
+        """
+        It is possible that you feel lost because you are not fully sure how this minigame works.
+
+        The lock is made of several moving parts. Each part has a current position, and the goal is 
+        to bring all of them to the correct middle position. When you click one lock to the left or 
+        right, it may also move other locks. Some connected locks move in the same direction, while 
+        others move in the opposite direction.
+
+        The important thing is to observe what changes after each click. Try to learn which lock affects 
+        which other lock, and whether the relation is the same or opposite. Once you understand these 
+        dependencies, the puzzle becomes much more manageable.
+
+        Higher lockpicking levels make the challenge more forgiving by allowing more mistakes before the 
+        attempt fails. This means that investing in lockpicking does not necessarily make the mechanism 
+        disappear — it gives you more room to experiment, make wrong moves, and recover.
+        """
+    )
+
+    st.markdown(
+        """
+        **Now I understand.** Thank you for the explanation. I am going back to open the lock myself.
+        """
+    )
+
+    if st.button(
+        "I understand now. Back to the lock.",
+        use_container_width=True
+    ):
+        st.session_state.chose_honour = True
+        st.rerun()
+
+    st.markdown(
+        """
+        **I know how it works, but I do not want to suffer through it.**
+        """
+    )
+
+    if st.button(
+        "I understand the rules, but I still want the solution.",
         type="primary",
         use_container_width=True
     ):
@@ -497,15 +577,28 @@ if not st.session_state.intro_accepted and st.session_state.second_warning:
         """
     )
 
+    st.markdown(
+        """
+        **You are right.** To fully immerse myself in the fate of the people of the Mining Valley, 
+        I must suffer with them. Thank you. I am going back to solve the lock.
+        """
+    )
+
     if st.button(
-        "You are right. To fully immerse myself in the fate of the people of the Valley of the Mines, I must suffer with them. Thank you. I am going back to solve the lock.",
+        "I will suffer with the Mining Valley.",
         use_container_width=True
     ):
         st.session_state.chose_honour = True
         st.rerun()
 
+    st.markdown(
+        """
+        **If I get one more question, I will go look for the solution on forums.**
+        """
+    )
+
     if st.button(
-        "If I get one more question, I will go look for the solution on forums.",
+        "Let me in before I open the forums.",
         type="primary",
         use_container_width=True
     ):
@@ -518,7 +611,7 @@ if not st.session_state.intro_accepted and st.session_state.second_warning:
 
 # Message after finally entering the solver
 if st.session_state.final_shame_message:
-    st.error("Apparently, there are no honest people in the Valley of the Mines...")
+    st.error("Apparently, there are no honest people in the Mining Valley...")
     
 st.subheader("1. Starting positions")
 st.caption("Lock 1 is the one closest to the player.")
