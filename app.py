@@ -411,6 +411,10 @@ st.info(
 # Desperation gate
 # ------------------------------------------------------------
 
+# ------------------------------------------------------------
+# Desperation gate
+# ------------------------------------------------------------
+
 if "intro_accepted" not in st.session_state:
     st.session_state.intro_accepted = False
 
@@ -470,29 +474,15 @@ if (
         """
     )
 
-    st.markdown(
-        """
-        **You are right.** I have reflected on my behaviour and want to continue trying to solve 
-        the lock on my own. Thank you for drawing my attention to this. I will not ruin the 
-        challenge prepared by the developers.
-        """
-    )
-
     if st.button(
-        "I will continue on my own.",
+        "You are right. I have reflected on my behaviour and want to continue trying to solve the lock on my own. Thank you for drawing my attention to this. I will not ruin the challenge prepared by the developers.",
         use_container_width=True
     ):
         st.session_state.chose_honour = True
         st.rerun()
 
-    st.markdown(
-        """
-        **I am done.** Just let me find the solution.
-        """
-    )
-
     if st.button(
-        "Show me the solver.",
+        "I am done. Just let me find the solution.",
         type="primary",
         use_container_width=True
     ):
@@ -530,27 +520,15 @@ if (
         """
     )
 
-    st.markdown(
-        """
-        **Now I understand.** Thank you for the explanation. I am going back to open the lock myself.
-        """
-    )
-
     if st.button(
-        "I understand now. Back to the lock.",
+        "Now I understand. Thank you for the explanation. I am going back to open the lock myself.",
         use_container_width=True
     ):
         st.session_state.chose_honour = True
         st.rerun()
 
-    st.markdown(
-        """
-        **I know how it works, but I do not want to suffer through it.**
-        """
-    )
-
     if st.button(
-        "I understand the rules, but I still want the solution.",
+        "I know how it works, but I do not want to suffer through it.",
         type="primary",
         use_container_width=True
     ):
@@ -577,28 +555,15 @@ if not st.session_state.intro_accepted and st.session_state.second_warning:
         """
     )
 
-    st.markdown(
-        """
-        **You are right.** To fully immerse myself in the fate of the people of the Mining Valley, 
-        I must suffer with them. Thank you. I am going back to solve the lock.
-        """
-    )
-
     if st.button(
-        "I will suffer with the Mining Valley.",
+        "You are right. To fully immerse myself in the fate of the people of the Mining Valley, I must suffer with them. Thank you. I am going back to solve the lock.",
         use_container_width=True
     ):
         st.session_state.chose_honour = True
         st.rerun()
 
-    st.markdown(
-        """
-        **If I get one more question, I will go look for the solution on forums.**
-        """
-    )
-
     if st.button(
-        "Let me in before I open the forums.",
+        "If I get one more question, I will go look for the solution on forums.",
         type="primary",
         use_container_width=True
     ):
