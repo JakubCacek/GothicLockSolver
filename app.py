@@ -667,7 +667,7 @@ if (
     and not st.session_state.second_warning
 ):
     
-    st.warning("Do it for your future self")
+    st.warning("Do it for your future self.")
 
     st.markdown(
         """
