@@ -421,11 +421,15 @@ if "chose_honour" not in st.session_state:
 if "rules_explanation" not in st.session_state:
     st.session_state.rules_explanation = False
 
+if "extra_gate_stage" not in st.session_state:
+    st.session_state.extra_gate_stage = 0
+
 if "second_warning" not in st.session_state:
     st.session_state.second_warning = False
 
 if "final_shame_message" not in st.session_state:
     st.session_state.final_shame_message = False
+
 
 # Randomized button order.
 # We store the order in session_state so it does not reshuffle after every rerun.
@@ -436,6 +440,22 @@ if "first_gate_order" not in st.session_state:
 if "rules_gate_order" not in st.session_state:
     st.session_state.rules_gate_order = ["honour", "continue"]
     random.shuffle(st.session_state.rules_gate_order)
+
+if "extra_gate_1_order" not in st.session_state:
+    st.session_state.extra_gate_1_order = ["honour", "continue"]
+    random.shuffle(st.session_state.extra_gate_1_order)
+
+if "extra_gate_2_order" not in st.session_state:
+    st.session_state.extra_gate_2_order = ["honour", "continue"]
+    random.shuffle(st.session_state.extra_gate_2_order)
+
+if "extra_gate_3_order" not in st.session_state:
+    st.session_state.extra_gate_3_order = ["honour", "continue"]
+    random.shuffle(st.session_state.extra_gate_3_order)
+
+if "extra_gate_4_order" not in st.session_state:
+    st.session_state.extra_gate_4_order = ["honour", "continue"]
+    random.shuffle(st.session_state.extra_gate_4_order)
 
 if "second_gate_order" not in st.session_state:
     st.session_state.second_gate_order = ["honour", "continue"]
@@ -464,6 +484,7 @@ if st.session_state.chose_honour:
 if (
     not st.session_state.intro_accepted
     and not st.session_state.rules_explanation
+    and st.session_state.extra_gate_stage == 0
     and not st.session_state.second_warning
 ):
     
@@ -508,6 +529,7 @@ if (
 if (
     not st.session_state.intro_accepted
     and st.session_state.rules_explanation
+    and st.session_state.extra_gate_stage == 0
     and not st.session_state.second_warning
 ):
     
@@ -547,6 +569,175 @@ if (
                 "I know how it works, but I do not want to suffer through it.",
                 use_container_width=True,
                 key="rules_gate_continue"
+            ):
+                st.session_state.extra_gate_stage = 1
+                st.rerun()
+
+    st.stop()
+
+
+# Extra gate 1: save scumming
+if (
+    not st.session_state.intro_accepted
+    and st.session_state.extra_gate_stage == 1
+    and not st.session_state.second_warning
+):
+    
+    st.warning("There are more honest ways to cheat.")
+
+    st.markdown(
+        """
+        If you really want to make things easier, there is always the old and noble art of save scumming.
+
+        You can save before approaching the chest, try to solve the lock, learn the sequence, and then reload. 
+        That way, you avoid wasting lockpicks, but you still engage with the puzzle itself. It is not exactly 
+        heroic, but at least you are still playing the minigame instead of outsourcing the whole thing to a machine.
+        """
+    )
+
+    for option in st.session_state.extra_gate_1_order:
+
+        if option == "honour":
+            if st.button(
+                "You know what, you are right. That solution suits me better.",
+                use_container_width=True,
+                key="extra_gate_1_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "If I am already cheating, I am not interested in half-measures.",
+                use_container_width=True,
+                key="extra_gate_1_continue"
+            ):
+                st.session_state.extra_gate_stage = 2
+                st.rerun()
+
+    st.stop()
+
+
+# Extra gate 2: the page is worse than learning the game
+if (
+    not st.session_state.intro_accepted
+    and st.session_state.extra_gate_stage == 2
+    and not st.session_state.second_warning
+):
+    
+    st.warning("At some point, this becomes more work than the lock.")
+
+    st.markdown(
+        """
+        Consider the possibility that clicking through all of these warnings every time will become more annoying 
+        than simply learning how the lockpicking system works.
+
+        This page was designed to be slightly unpleasant for a reason. If using the helper becomes a chore, maybe 
+        that is the universe gently pushing you back toward the actual game.
+        """
+    )
+
+    for option in st.session_state.extra_gate_2_order:
+
+        if option == "honour":
+            if st.button(
+                "You are right. This page is terrible. I would rather suffer in the game.",
+                use_container_width=True,
+                key="extra_gate_2_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "I am only here because I genuinely cannot get past this lock.",
+                use_container_width=True,
+                key="extra_gate_2_continue"
+            ):
+                st.session_state.extra_gate_stage = 3
+                st.rerun()
+
+    st.stop()
+
+
+# Extra gate 3: cognitive benefits
+if (
+    not st.session_state.intro_accepted
+    and st.session_state.extra_gate_stage == 3
+    and not st.session_state.second_warning
+):
+    
+    st.warning("Have you considered simply thinking?")
+
+    st.markdown(
+        """
+        Engaging in complex cognitive activities, such as solving puzzles, planning sequences, and tracking 
+        changing states, is generally good for your mind.
+
+        We already outsource enough thinking to tools, guides, search engines, and now generative AI. If we are 
+        going to let machines do everything for us, maybe we can at least avoid cheating in a video game puzzle.
+        """
+    )
+
+    for option in st.session_state.extra_gate_3_order:
+
+        if option == "honour":
+            if st.button(
+                "You are right, but I am doing this only to take care of myself and reduce the risk of dementia.",
+                use_container_width=True,
+                key="extra_gate_3_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "I came back from work, I am tired, and I just want to play a game.",
+                use_container_width=True,
+                key="extra_gate_3_continue"
+            ):
+                st.session_state.extra_gate_stage = 4
+                st.rerun()
+
+    st.stop()
+
+
+# Extra gate 4: intelligence test
+if (
+    not st.session_state.intro_accepted
+    and st.session_state.extra_gate_stage == 4
+    and not st.session_state.second_warning
+):
+    
+    st.warning("Maybe this is not a lock. Maybe it is an intelligence test.")
+
+    st.markdown(
+        """
+        This task contains many elements that are used in intelligence tests or broader assessments of cognitive 
+        functioning: planning a sequence of moves, monitoring changes, inhibiting automatic reactions, and updating 
+        your mental model after each attempt.
+
+        Maybe you should think of this minigame as a small intelligence test hidden inside the Colony. 
+        A wet, rusty, deeply annoying intelligence test, but a test nonetheless.
+        """
+    )
+
+    for option in st.session_state.extra_gate_4_order:
+
+        if option == "honour":
+            if st.button(
+                "Fair point. By the end of the game, I might be ready to send my papers to Mensa.",
+                use_container_width=True,
+                key="extra_gate_4_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "There is nothing enjoyable about intelligence tests, and I do not know why I would do one in my free time.",
+                use_container_width=True,
+                key="extra_gate_4_continue"
             ):
                 st.session_state.second_warning = True
                 st.rerun()
