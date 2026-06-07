@@ -513,10 +513,9 @@ if (
         The important thing is to observe what changes after each click. Try to learn which lock affects 
         which other lock, and whether the relation is the same or opposite. Once you understand these 
         dependencies, the puzzle becomes much more manageable.
-
-        Higher lockpicking levels make the challenge more forgiving by allowing more mistakes before the 
-        attempt fails. This means that investing in lockpicking does not necessarily make the mechanism 
-        disappear — it gives you more room to experiment, make wrong moves, and recover.
+        
+        Leveling lockpicking makes your lockpick last longer, so you can make more mistakes  
+        before the attempt fails. Maybe you do not need this app, maybe you just need to invest a few skill points.
         """
     )
 
