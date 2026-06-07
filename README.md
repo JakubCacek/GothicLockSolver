@@ -5,6 +5,8 @@ The app takes the current lock positions and their dependencies, then searches f
 
 Please use it only as a last resort, in a final act of desperation and frustration, when you would otherwise start searching for a ready-made solution on forums anyway. The goal is to help stuck players, not to encourage skipping every lockpicking challenge in the game.
 
+https://gothiclocksolver.streamlit.app/
+
 ## A note on intended use
 
 This app is meant as a last-resort helper for moments of desperation, not as a way to exploit the game.
