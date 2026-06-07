@@ -514,8 +514,7 @@ if (
         which other lock, and whether the relation is the same or opposite. Once you understand these 
         dependencies, the puzzle becomes much more manageable.
         
-        Leveling lockpicking makes your lockpick last longer, so you can make more mistakes  
-        before the attempt fails. Maybe you do not need this app, maybe you just need to invest a few skill points.
+        Leveling lockpicking makes your lockpick last longer, so you can make more mistakes before the attempt fails. Maybe you do not need this app, maybe you just need to invest a few skill points.
         """
     )
 
