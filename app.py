@@ -10,6 +10,7 @@ from typing import List, Dict, Any, Optional
 
 import pandas as pd
 import streamlit as st
+import random
 
 n_locks = 5
 min_pos = 1
@@ -411,10 +412,6 @@ st.info(
 # Desperation gate
 # ------------------------------------------------------------
 
-# ------------------------------------------------------------
-# Desperation gate
-# ------------------------------------------------------------
-
 if "intro_accepted" not in st.session_state:
     st.session_state.intro_accepted = False
 
@@ -430,8 +427,23 @@ if "second_warning" not in st.session_state:
 if "final_shame_message" not in st.session_state:
     st.session_state.final_shame_message = False
 
+# Randomized button order.
+# We store the order in session_state so it does not reshuffle after every rerun.
+if "first_gate_order" not in st.session_state:
+    st.session_state.first_gate_order = ["honour", "continue"]
+    random.shuffle(st.session_state.first_gate_order)
 
-# Honour ending after choosing to continue alone
+if "rules_gate_order" not in st.session_state:
+    st.session_state.rules_gate_order = ["honour", "continue"]
+    random.shuffle(st.session_state.rules_gate_order)
+
+if "second_gate_order" not in st.session_state:
+    st.session_state.second_gate_order = ["honour", "continue"]
+    random.shuffle(st.session_state.second_gate_order)
+
+
+# Honour ending after choosing to continue alone.
+# No return button here. If someone chooses this path, they have to refresh the page.
 if st.session_state.chose_honour:
     
     st.success("Good choice.")
@@ -444,11 +456,6 @@ if st.session_state.chose_honour:
         The Sleeper sees your patience.
         """
     )
-
-    if st.button("The lock broke me.", use_container_width=True):
-        st.session_state.chose_honour = False
-        st.session_state.rules_explanation = True
-        st.rerun()
 
     st.stop()
 
@@ -474,20 +481,25 @@ if (
         """
     )
 
-    if st.button(
-        "You are right. I have reflected on my behaviour and want to continue trying to solve the lock on my own. Thank you for drawing my attention to this. I will not ruin the challenge prepared by the developers.",
-        use_container_width=True
-    ):
-        st.session_state.chose_honour = True
-        st.rerun()
+    for option in st.session_state.first_gate_order:
 
-    if st.button(
-        "I am done. Just let me find the solution.",
-        type="primary",
-        use_container_width=True
-    ):
-        st.session_state.rules_explanation = True
-        st.rerun()
+        if option == "honour":
+            if st.button(
+                "You are right. I have reflected on my behaviour and want to continue trying to solve the lock on my own. Thank you for drawing my attention to this. I will not ruin the challenge prepared by the developers.",
+                use_container_width=True,
+                key="first_gate_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "I am done. Just let me find the solution.",
+                use_container_width=True,
+                key="first_gate_continue"
+            ):
+                st.session_state.rules_explanation = True
+                st.rerun()
 
     st.stop()
 
@@ -514,24 +526,30 @@ if (
         which other lock, and whether the relation is the same or opposite. Once you understand these 
         dependencies, the puzzle becomes much more manageable.
         
-        Leveling lockpicking makes your lockpick last longer, so you can make more mistakes before the attempt fails. Maybe you do not need this app, maybe you just need to invest a few skill points.
+        Leveling lockpicking makes your lockpick last longer, so you can make more mistakes before the 
+        attempt fails. Maybe you do not need this app, maybe you just need to invest a few skill points.
         """
     )
 
-    if st.button(
-        "Now I understand. Thank you for the explanation. I am going back to open the lock myself.",
-        use_container_width=True
-    ):
-        st.session_state.chose_honour = True
-        st.rerun()
+    for option in st.session_state.rules_gate_order:
 
-    if st.button(
-        "I know how it works, but I do not want to suffer through it.",
-        type="primary",
-        use_container_width=True
-    ):
-        st.session_state.second_warning = True
-        st.rerun()
+        if option == "honour":
+            if st.button(
+                "Now I understand. Thank you for the explanation. I am going back to open the lock myself.",
+                use_container_width=True,
+                key="rules_gate_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "I know how it works, but I do not want to suffer through it.",
+                use_container_width=True,
+                key="rules_gate_continue"
+            ):
+                st.session_state.second_warning = True
+                st.rerun()
 
     st.stop()
 
@@ -553,21 +571,26 @@ if not st.session_state.intro_accepted and st.session_state.second_warning:
         """
     )
 
-    if st.button(
-        "You are right. To fully immerse myself in the fate of the people of the Mining Valley, I must suffer with them. Thank you. I am going back to solve the lock.",
-        use_container_width=True
-    ):
-        st.session_state.chose_honour = True
-        st.rerun()
+    for option in st.session_state.second_gate_order:
 
-    if st.button(
-        "If I get one more question, I will go look for the solution on forums.",
-        type="primary",
-        use_container_width=True
-    ):
-        st.session_state.intro_accepted = True
-        st.session_state.final_shame_message = True
-        st.rerun()
+        if option == "honour":
+            if st.button(
+                "You are right. To fully immerse myself in the fate of the people of the Mining Valley, I must suffer with them. Thank you. I am going back to solve the lock.",
+                use_container_width=True,
+                key="second_gate_honour"
+            ):
+                st.session_state.chose_honour = True
+                st.rerun()
+
+        if option == "continue":
+            if st.button(
+                "If I get one more question, I will go look for the solution on forums.",
+                use_container_width=True,
+                key="second_gate_continue"
+            ):
+                st.session_state.intro_accepted = True
+                st.session_state.final_shame_message = True
+                st.rerun()
 
     st.stop()
 
