@@ -401,7 +401,7 @@ st.info(
     to your own needs. It may also be especially useful for console players, who can open the app 
     on their phone while playing.
 
-    So this is not meant as gamer elitism. Everyone can play however they want.
+    So this was not meant as gamer elitism. It was more about respecting the developers’ work, which I genuinely appreciate.
     """
 )
 
